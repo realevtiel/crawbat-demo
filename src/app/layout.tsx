@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -28,6 +29,23 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <Script
+          id="crawbat-chat-widget"
+          src="https://widget.crawbat.com/chat-widget.js"
+          strategy="afterInteractive"
+          data-title="Support Chat"
+          data-position="right"
+          data-primary-color="#000000"
+          data-welcome-message="Hello! I am your virtual assistant. How can I help you today?"
+          data-client-id="demo-business"
+          data-show-badge="true"
+          data-badge-text="AI powered"
+          data-api-url="https://example.com/api/chat"
+          data-use-mock-api="true"
+          data-mock-error="false"
+          data-fallback-message="Sorry, something went wrong. Please try again later."
+          data-request-timeout="12000"
+        />
       </body>
     </html>
   );
