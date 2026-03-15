@@ -38,13 +38,19 @@ export default function RootLayout({
           data-primary-color="#000000"
           data-welcome-message="Hello! I am your virtual assistant. How can I help you today?"
           data-client-id="demo-business"
+          data-widget-key="pub_demo_123"
           data-show-badge="true"
           data-badge-text="AI powered"
           data-api-url="https://example.com/api/chat"
+          data-widget-config-url="https://example.com/api/widget-config"
           data-use-mock-api="true"
           data-mock-error="false"
           data-fallback-message="Sorry, something went wrong. Please try again later."
           data-request-timeout="12000"
+          data-contact-email="support@example.com"
+          data-contact-phone="+1 555 010 100"
+          data-contact-url="https://example.com/support"
+          data-max-history-messages="10"
         />
       </body>
     </html>
