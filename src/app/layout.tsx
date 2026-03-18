@@ -45,7 +45,7 @@ export default function RootLayout({
           data-primary-color="#000000"
           data-welcome-message="Hello! I am your virtual assistant. How can I help you today?"
           data-client-id="acme"
-          data-widget-key="pub_test"
+          data-widget-key="pub_acme_test_123"
           data-show-badge="true"
           data-badge-text="AI powered"
           data-api-url="https://api.crawbat.com/chat"
