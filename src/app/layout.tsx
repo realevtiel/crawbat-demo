@@ -44,8 +44,8 @@ export default function RootLayout({
           data-position="right"
           data-primary-color="#000000"
           data-welcome-message="Hello! I am your virtual assistant. How can I help you today?"
-          data-client-id="acme"
-          data-widget-key="pub_acme_test_123"
+          data-client-id="beta"
+          data-widget-key="pub_beta_test_456"
           data-show-badge="true"
           data-badge-text="AI powered"
           data-api-url="https://api.crawbat.com/chat"
@@ -57,7 +57,6 @@ export default function RootLayout({
           data-contact-email="support@example.com"
           data-contact-phone="+1 555 010 100"
           data-contact-url="https://example.com/support"
-          data-max-history-messages="10"
         />
       </body>
     </html>
