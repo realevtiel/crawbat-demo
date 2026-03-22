@@ -36,7 +36,7 @@ export default function RootLayout({
       >
         {children}
 
-        <Script
+        {/* <Script
           id="crawbat-chat-widget"
           src="https://widget.crawbat.com/chat-widget.js"
           strategy="afterInteractive"
@@ -57,8 +57,9 @@ export default function RootLayout({
           data-contact-email="support@example.com"
           data-contact-phone="+1 555 010 100"
           data-contact-url="https://example.com/support"
-        />
-                <Script
+        /> */}
+        
+        <Script
           id="crawbat-chat-widget"
           src="https://widget.crawbat.com/chat-widget.js"
           strategy="afterInteractive"
