@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 const CLIENTS = [
   {
@@ -32,25 +32,36 @@ const WIDGET_SRC = "https://widget.crawbat.com/chat-widget.js";
 const API_URL = "https://api.crawbat.com/chat";
 const CONFIG_URL = "https://api.crawbat.com/widget-config";
 
-function destroyWidget() {
-  // Remove the script tag
-  const script = document.getElementById("crawbat-chat-widget");
-  if (script) script.remove();
+// Track every DOM node the widget adds to <body> so we can remove them all
+let widgetNodes: Set<Node> = new Set();
+let observer: MutationObserver | null = null;
 
-  // Remove all elements the widget may have injected into <body>
-  // Widget typically creates containers, overlays, iframes, shadow hosts, etc.
-  document.querySelectorAll(
-    "[id*='crawbat'], [class*='crawbat'], [data-crawbat]"
-  ).forEach((el) => el.remove());
-
-  // Also remove any style tags the widget injected
-  document.querySelectorAll("style").forEach((style) => {
-    if (style.textContent?.includes("crawbat")) {
-      style.remove();
+function startTracking() {
+  widgetNodes = new Set();
+  observer = new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      m.addedNodes.forEach((node) => widgetNodes.add(node));
     }
   });
+  observer.observe(document.body, { childList: true });
+}
 
-  // Clean up any global state the widget may have set
+function destroyWidget() {
+  // Stop observing
+  if (observer) {
+    observer.disconnect();
+    observer = null;
+  }
+
+  // Remove every node the widget injected
+  widgetNodes.forEach((node) => {
+    if (node.parentNode) {
+      node.parentNode.removeChild(node);
+    }
+  });
+  widgetNodes = new Set();
+
+  // Clean up global state the widget may have set
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const w = window as any;
   delete w.CrawbatWidget;
@@ -59,6 +70,9 @@ function destroyWidget() {
 }
 
 function injectWidget(slug: string, widgetKey: string) {
+  // Start tracking before injecting so we catch everything
+  startTracking();
+
   const script = document.createElement("script");
   script.id = "crawbat-chat-widget";
   script.src = WIDGET_SRC;
@@ -75,23 +89,20 @@ function injectWidget(slug: string, widgetKey: string) {
 
 export default function Home() {
   const [active, setActive] = useState<ClientSlug>("alpha");
-  const prevSlug = useRef<string | null>(null);
 
   const activeClient = CLIENTS.find((c) => c.slug === active)!;
 
   useEffect(() => {
-    // On first mount or when client changes, tear down old widget and load new
-    if (prevSlug.current !== activeClient.slug) {
+    destroyWidget();
+
+    const timer = setTimeout(() => {
+      injectWidget(activeClient.slug, activeClient.widgetKey);
+    }, 150);
+
+    return () => {
+      clearTimeout(timer);
       destroyWidget();
-
-      // Small delay to let DOM settle after cleanup before injecting fresh widget
-      const timer = setTimeout(() => {
-        injectWidget(activeClient.slug, activeClient.widgetKey);
-      }, 100);
-
-      prevSlug.current = activeClient.slug;
-      return () => clearTimeout(timer);
-    }
+    };
   }, [activeClient]);
 
   return (
