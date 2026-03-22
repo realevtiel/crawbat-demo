@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const CLIENTS = [
   {
-    slug: "acme",
-    label: "Acme Store",
+    slug: "alpha",
+    label: "Alpha Store",
     description: "E-commerce website",
-    widgetKey: "pub_acme_test_123",
+    widgetKey: "pub_alpha_test_123",
     color: "#0a0a0a",
   },
   {
@@ -32,30 +32,67 @@ const WIDGET_SRC = "https://widget.crawbat.com/chat-widget.js";
 const API_URL = "https://api.crawbat.com/chat";
 const CONFIG_URL = "https://api.crawbat.com/widget-config";
 
-function buildWidgetHtml(slug: string, widgetKey: string) {
-  return `<!DOCTYPE html>
-<html><head><style>
-  html, body { margin: 0; padding: 0; height: 100%; background: transparent; }
-</style></head>
-<body>
-<script
-  id="crawbat-chat-widget"
-  src="${WIDGET_SRC}"
-  data-client-id="${slug}"
-  data-widget-key="${widgetKey}"
-  data-api-url="${API_URL}"
-  data-widget-config-url="${CONFIG_URL}"
-  data-position="center"
-  data-show-badge="true"
-  data-request-timeout="12000"
-><\/script>
-</body></html>`;
+function destroyWidget() {
+  // Remove the script tag
+  const script = document.getElementById("crawbat-chat-widget");
+  if (script) script.remove();
+
+  // Remove all elements the widget may have injected into <body>
+  // Widget typically creates containers, overlays, iframes, shadow hosts, etc.
+  document.querySelectorAll(
+    "[id*='crawbat'], [class*='crawbat'], [data-crawbat]"
+  ).forEach((el) => el.remove());
+
+  // Also remove any style tags the widget injected
+  document.querySelectorAll("style").forEach((style) => {
+    if (style.textContent?.includes("crawbat")) {
+      style.remove();
+    }
+  });
+
+  // Clean up any global state the widget may have set
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const w = window as any;
+  delete w.CrawbatWidget;
+  delete w.crawbatWidget;
+  delete w.__crawbat;
+}
+
+function injectWidget(slug: string, widgetKey: string) {
+  const script = document.createElement("script");
+  script.id = "crawbat-chat-widget";
+  script.src = WIDGET_SRC;
+  script.async = true;
+  script.dataset.clientId = slug;
+  script.dataset.widgetKey = widgetKey;
+  script.dataset.apiUrl = API_URL;
+  script.dataset.widgetConfigUrl = CONFIG_URL;
+  script.dataset.position = "center";
+  script.dataset.showBadge = "true";
+  script.dataset.requestTimeout = "12000";
+  document.body.appendChild(script);
 }
 
 export default function Home() {
-  const [active, setActive] = useState<ClientSlug>("acme");
+  const [active, setActive] = useState<ClientSlug>("alpha");
+  const prevSlug = useRef<string | null>(null);
 
   const activeClient = CLIENTS.find((c) => c.slug === active)!;
+
+  useEffect(() => {
+    // On first mount or when client changes, tear down old widget and load new
+    if (prevSlug.current !== activeClient.slug) {
+      destroyWidget();
+
+      // Small delay to let DOM settle after cleanup before injecting fresh widget
+      const timer = setTimeout(() => {
+        injectWidget(activeClient.slug, activeClient.widgetKey);
+      }, 100);
+
+      prevSlug.current = activeClient.slug;
+      return () => clearTimeout(timer);
+    }
+  }, [activeClient]);
 
   return (
     <div className="flex min-h-screen flex-col items-center bg-zinc-50 font-sans dark:bg-zinc-950">
@@ -105,7 +142,6 @@ export default function Home() {
                   onChange={() => setActive(client.slug)}
                   className="sr-only"
                 />
-                {/* Color dot */}
                 <span
                   className="h-3 w-3 shrink-0 rounded-full"
                   style={{
@@ -133,18 +169,6 @@ export default function Home() {
             );
           })}
         </fieldset>
-
-        {/* Widget inside iframe — key forces full remount on switch */}
-        <div className="relative flex w-full max-w-md flex-1 items-start justify-center">
-          <iframe
-            key={activeClient.slug}
-            srcDoc={buildWidgetHtml(activeClient.slug, activeClient.widgetKey)}
-            title="Crawbat chat widget"
-            className="h-full w-full border-0"
-            style={{ minHeight: 500 }}
-            sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-          />
-        </div>
       </main>
     </div>
   );
