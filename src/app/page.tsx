@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 
 const CLIENTS = [
   {
@@ -32,49 +32,30 @@ const WIDGET_SRC = "https://widget.crawbat.com/chat-widget.js";
 const API_URL = "https://api.crawbat.com/chat";
 const CONFIG_URL = "https://api.crawbat.com/widget-config";
 
-function loadWidget(slug: string, widgetKey: string) {
-  // Remove existing widget script and any DOM it injected
-  const old = document.getElementById("crawbat-chat-widget");
-  if (old) old.remove();
-
-  // Remove widget root elements (the widget typically injects these)
-  document
-    .querySelectorAll("[id^='crawbat']")
-    .forEach((el) => el.remove());
-
-  const script = document.createElement("script");
-  script.id = "crawbat-chat-widget";
-  script.src = WIDGET_SRC;
-  script.async = true;
-  script.dataset.clientId = slug;
-  script.dataset.widgetKey = widgetKey;
-  script.dataset.apiUrl = API_URL;
-  script.dataset.widgetConfigUrl = CONFIG_URL;
-  script.dataset.position = "center";
-  script.dataset.showBadge = "true";
-  script.dataset.requestTimeout = "12000";
-
-  // Append to the widget container so positioning is scoped
-  const container = document.getElementById("widget-anchor");
-  if (container) {
-    container.appendChild(script);
-  } else {
-    document.body.appendChild(script);
-  }
+function buildWidgetHtml(slug: string, widgetKey: string) {
+  return `<!DOCTYPE html>
+<html><head><style>
+  html, body { margin: 0; padding: 0; height: 100%; background: transparent; }
+</style></head>
+<body>
+<script
+  id="crawbat-chat-widget"
+  src="${WIDGET_SRC}"
+  data-client-id="${slug}"
+  data-widget-key="${widgetKey}"
+  data-api-url="${API_URL}"
+  data-widget-config-url="${CONFIG_URL}"
+  data-position="center"
+  data-show-badge="true"
+  data-request-timeout="12000"
+><\/script>
+</body></html>`;
 }
 
 export default function Home() {
   const [active, setActive] = useState<ClientSlug>("acme");
 
   const activeClient = CLIENTS.find((c) => c.slug === active)!;
-
-  const handleSwitch = useCallback((slug: ClientSlug) => {
-    setActive(slug);
-  }, []);
-
-  useEffect(() => {
-    loadWidget(activeClient.slug, activeClient.widgetKey);
-  }, [activeClient]);
 
   return (
     <div className="flex min-h-screen flex-col items-center bg-zinc-50 font-sans dark:bg-zinc-950">
@@ -121,7 +102,7 @@ export default function Home() {
                   name="demo-client"
                   value={client.slug}
                   checked={isActive}
-                  onChange={() => handleSwitch(client.slug as ClientSlug)}
+                  onChange={() => setActive(client.slug)}
                   className="sr-only"
                 />
                 {/* Color dot */}
@@ -153,12 +134,17 @@ export default function Home() {
           })}
         </fieldset>
 
-        {/* Widget container — controls the visual position of the widget on the page */}
-        <div
-          id="widget-anchor"
-          className="relative flex w-full max-w-md flex-1 items-start justify-center"
-          style={{ minHeight: 480 }}
-        />
+        {/* Widget inside iframe — key forces full remount on switch */}
+        <div className="relative flex w-full max-w-md flex-1 items-start justify-center">
+          <iframe
+            key={activeClient.slug}
+            srcDoc={buildWidgetHtml(activeClient.slug, activeClient.widgetKey)}
+            title="Crawbat chat widget"
+            className="h-full w-full border-0"
+            style={{ minHeight: 500 }}
+            sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+          />
+        </div>
       </main>
     </div>
   );
