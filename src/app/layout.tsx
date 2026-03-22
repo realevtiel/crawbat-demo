@@ -47,7 +47,6 @@ export default function RootLayout({
           data-client-id="beta"
           data-widget-key="pub_beta_test_456"
           data-show-badge="true"
-          data-badge-text="AI powered"
           data-api-url="https://api.crawbat.com/chat"
           data-widget-config-url="https://api.crawbat.com/widget-config"
           data-use-mock-api="false"
@@ -63,22 +62,14 @@ export default function RootLayout({
           id="crawbat-chat-widget"
           src="https://widget.crawbat.com/chat-widget.js"
           strategy="afterInteractive"
-          data-title="Support Chat"
-          data-position="center"
-          data-primary-color="#000000"
-          data-welcome-message="Hello! I am your virtual assistant. How can I help you today?"
           data-client-id="acme"
           data-widget-key="pub_acme_test_123"
-          data-show-badge="true"
           data-api-url="https://api.crawbat.com/chat"
           data-widget-config-url="https://api.crawbat.com/widget-config"
-          data-use-mock-api="false"
-          data-mock-error="false"
-          data-fallback-message="Sorry, something went wrong. Please try again later."
+
+          data-position="center" 
+          data-show-badge="true"
           data-request-timeout="12000"
-          data-contact-email="support@example.com"
-          data-contact-phone="+1 555 010 100"
-          data-contact-url="https://example.com/support"
         />
       </body>
     </html>
