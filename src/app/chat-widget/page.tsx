@@ -5,47 +5,75 @@ import { useEffect, useRef, useState } from "react";
 const CLIENTS = [
   {
     slug: "alpha",
-    label: "Alpha Store",
+    label: "Online Store Support",
     industry: "E-commerce",
     description:
-      "Online retail assistant trained on product catalog, shipping policies, and return procedures.",
+      "Answers shipping, returns, order changes, and product questions instantly and much more!",
     widgetKey: "pub_alpha_test_123",
     color: "#6d28d9",
-    icon: "🛒",
+    icon: (color: string) => (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+        <path d="M3 6h18" />
+        <path d="M16 10a4 4 0 0 1-8 0" />
+      </svg>
+    ),
     suggestions: [
       "Can I change my shipping address after I place an order?",
-      "Do you refund the original shipping cost when I return an item?",
+      "How long does shipping take?",
+      "What is your return policy?",
+      "Can I cancel my order after payment?",
+      "Do you refund the original shipping cost?",
     ],
   },
   {
     slug: "beta",
-    label: "Beta Clinic",
+    label: "Clinic Front Desk Assistant",
     industry: "Healthcare",
     description:
-      "Patient-facing assistant for appointment scheduling, clinic hours, and insurance FAQs.",
+      "Helps patients with appointments, office hours, accepted insurance, and common questions.",
     widgetKey: "pub_beta_test_456",
     color: "#dc2626",
-    icon: "🏥",
+    icon: (color: string) => (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6 6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3" />
+        <path d="M8 15v1a6 6 0 0 0 6 6 6 6 0 0 0 6-6v-4" />
+        <circle cx="20" cy="10" r="2" />
+      </svg>
+    ),
     suggestions: [
       "Do I need an appointment or can I walk in?",
+      "Do you accept my insurance?",
+      "Can I book a visit for tomorrow?",
+      "How do I schedule a visit?",
       "What should I do if my symptoms get worse after I leave the clinic?",
-      "Do you provide emergency care for chest pain or stroke symptoms?",
     ],
   },
   {
     slug: "gamma",
-    label: "Gamma Services",
+    label: "Service Booking Assistant",
     industry: "Pest Control",
     description:
-      "Service assistant handling quotes, scheduling, and pest identification guides.",
+      "Handles quotes, scheduling, service area questions, and common treatment concerns.",
     widgetKey: "pub_gamma_test_789",
     color: "#0f766e",
-    icon: "🛡️",
+    icon: (color: string) => (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 22V8" />
+        <path d="M5 12H2a10 10 0 0 0 20 0h-3" />
+        <path d="M5.2 8.5 2 6" />
+        <path d="M18.8 8.5 22 6" />
+        <circle cx="12" cy="5" r="3" />
+        <path d="M9.5 3 7 1" />
+        <path d="M14.5 3 17 1" />
+      </svg>
+    ),
     suggestions: [
+      "Can I get a quote before booking?",
+      "Do you service my area?",
       "Do I need to leave the house during treatment?",
-      "If I still see roaches after treatment, does that mean the service failed?",
-      "Do you service my address if I am outside your main area?",
-      "Can I schedule a visit?",
+      "How soon can you come out?",
+      "What if I still see pests after treatment?",
     ],
   },
 ] as const;
@@ -60,16 +88,22 @@ const SM_BREAKPOINT = 640;
 
 const FEATURES = [
   {
-    title: "Knowledge-Grounded",
-    text: "Every answer comes from your approved docs — no hallucinations.",
+    title: "Reduce support load",
+    text: (
+      <>Handle up to <strong className="text-zinc-300">50% of repetitive questions</strong> automatically and <strong className="text-zinc-300">free up your team</strong>.</>
+    ),
   },
   {
-    title: "Plug & Play",
-    text: "One script tag. Works on any site in under 5 minutes.",
+    title: "Done for you, fully managed",
+    text: (
+      <>We <strong className="text-zinc-300">set everything up</strong>, work with your team, and keep your support system <strong className="text-zinc-300">up to date</strong>.</>
+    ),
   },
   {
-    title: "Multi-Tenant",
-    text: "One platform, unlimited clients — each with their own data & brand.",
+    title: "Support that gets smarter",
+    text: (
+      <>We analyze conversations, find gaps, and <strong className="text-zinc-300">continuously improve</strong> your system.</>
+    ),
   },
 ];
 
@@ -233,21 +267,21 @@ export default function ChatWidgetPage() {
             color: activeClient.color,
           }}
         >
-          AI Chat Widget
+          AI Support Chat
         </p>
         <h1 className="text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
-          One widget.{" "}
+          Instant answers.{" "}
           <span
             className="transition-colors duration-300"
             style={{ color: activeClient.color }}
           >
-            Any business.
+             Better support.
           </span>
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-zinc-400 sm:text-lg">
-          Crawbat embeds an AI-powered support chat trained exclusively on{" "}
-          <em>your</em> knowledge base. Switch between live demos below to see
-          the same widget serve three completely different industries.
+          Reduce <span className="transition-colors duration-300" style={{ color: activeClient.color }}>repetitive</span> support questions, reply faster, and <span className="transition-colors duration-300" style={{ color: activeClient.color }}>help more customers</span> with an AI chat trained on{" "}
+          <em>your</em> business. 
+          Explore the live demos below to see how it works across different industries.
         </p>
       </section>
 
@@ -278,7 +312,7 @@ export default function ChatWidgetPage() {
                 }
               >
                 <div className="mb-2 flex items-center justify-between sm:mb-3">
-                  <span className="text-xl sm:text-2xl">{client.icon}</span>
+                  <span className="transition-colors duration-300">{client.icon(isActive ? client.color : "#71717a")}</span>
                   <span
                     className="rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider sm:px-2.5 sm:text-[11px]"
                     style={
@@ -324,7 +358,7 @@ export default function ChatWidgetPage() {
       <section className="mx-auto w-full max-w-5xl px-6 pb-8 sm:pb-12">
         <div className="mx-auto max-w-2xl">
           <p className="mb-3 flex items-center justify-center gap-2 text-center text-xs font-medium text-zinc-500">
-            <span>You can start the chat with</span>
+            <span>Start with one of these questions</span>
             <span
               className="transition-colors duration-300"
               style={{ color: `${activeClient.color}88` }}
@@ -333,9 +367,9 @@ export default function ChatWidgetPage() {
             </span>
           </p>
           <div className="flex flex-wrap justify-center gap-2">
-            {activeClient.suggestions.map((text) => (
+            {activeClient.suggestions.map((text, i) => (
               <button
-                key={text}
+                key={`${activeClient.slug}-${i}`}
                 type="button"
                 onClick={() => sendToWidget(text)}
                 className="rounded-full border border-zinc-800 bg-zinc-900/60 px-4 py-2 text-left text-xs leading-relaxed text-zinc-300 transition-all hover:border-zinc-600 hover:bg-zinc-800 hover:text-white sm:text-sm"
@@ -382,17 +416,61 @@ export default function ChatWidgetPage() {
 
       {/* ── Features ── */}
       <section className="border-t border-zinc-800/60 bg-zinc-900/40">
-        <div className="mx-auto grid max-w-5xl gap-6 px-6 py-12 sm:grid-cols-3 sm:gap-8 sm:py-16">
-          {FEATURES.map((f) => (
-            <div key={f.title}>
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-300 sm:text-sm">
-                {f.title}
-              </h3>
-              <p className="mt-1.5 text-xs leading-relaxed text-zinc-500 sm:mt-2 sm:text-sm">
-                {f.text}
-              </p>
-            </div>
-          ))}
+        <div className="mx-auto max-w-5xl px-6 pt-10 pb-12 sm:pt-12 sm:pb-16">
+          <h2
+            className="text-center text-xl font-semibold tracking-tight transition-colors duration-300 sm:text-2xl"
+          >
+            Automation is easy.{" "}
+          <span
+            className="transition-colors duration-300"
+            style={{ color: activeClient.color }}
+          >
+             Improving support is what matters.
+          </span>
+          </h2>
+          <div className="mx-auto my-6 h-px w-24 bg-zinc-800 sm:my-8" />
+          <div className="grid gap-6 sm:grid-cols-3 sm:gap-8">
+            {FEATURES.map((f) => (
+              <div key={f.title}>
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-300 sm:text-sm">
+                  {f.title}
+                </h3>
+                <p className="mt-1.5 text-xs leading-relaxed text-zinc-500 sm:mt-2 sm:text-sm">
+                  {f.text}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section className="border-t border-zinc-800/60">
+        <div className="mx-auto max-w-5xl px-6 py-16 text-center sm:py-20">
+          <h2 className="text-xl font-semibold tracking-tight text-zinc-100 sm:text-2xl">
+            Ready to improve your support?
+          </h2>
+          <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-zinc-500 sm:text-base">
+            We&apos;ll review your current setup, show what to automate, and tailor everything to your business.
+          </p>
+          <a
+            href="https://calendar.google.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 inline-block rounded-full px-7 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:brightness-110"
+            style={{
+              backgroundColor: activeClient.color,
+              boxShadow: `0 0 20px ${activeClient.color}33`,
+            }}
+          >
+            Book a call
+          </a>
+          <p className="mt-5 text-xs tracking-wide text-zinc-600">
+            Flexible setup. Built around your business.
+          </p>
+          <p className="mt-1 text-xs tracking-wide text-zinc-600">
+            Quick 10–15 min call
+          </p>
         </div>
       </section>
 
