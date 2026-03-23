@@ -80,6 +80,7 @@ const CLIENTS = [
 
 type ClientSlug = (typeof CLIENTS)[number]["slug"];
 
+const CONSENT_KEY = "crawbat_demo_consent";
 const WIDGET_SRC = "https://widget.crawbat.com/chat-widget.js";
 const API_URL = "https://api.crawbat.com/chat";
 const CONFIG_URL = "https://api.crawbat.com/widget-config";
@@ -163,6 +164,10 @@ function injectWidget(
   script.dataset.showBadge = "true";
   script.dataset.requestTimeout = "12000";
 
+  if (sessionStorage.getItem(CONSENT_KEY)) {
+    script.dataset.skipConsent = "true";
+  }
+
   if (isDesktop && desktopContainer) {
     script.dataset.position = "center";
     const root = document.createElement("div");
@@ -207,6 +212,13 @@ export default function ChatWidgetPage() {
   const [isDesktop, setIsDesktop] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const activeClient = CLIENTS.find((c) => c.slug === active)!;
+
+  // Listen for consent acceptance and persist for the session
+  useEffect(() => {
+    const onConsent = () => sessionStorage.setItem(CONSENT_KEY, "true");
+    window.addEventListener("crawbat:consent", onConsent);
+    return () => window.removeEventListener("crawbat:consent", onConsent);
+  }, []);
 
   // Track viewport size and re-mount widget when crossing the breakpoint
   useEffect(() => {
