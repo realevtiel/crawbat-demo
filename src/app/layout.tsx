@@ -34,21 +34,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-
-          {/* <Script
-          id="crawbat-chat-widget"
-          src="https://widget.crawbat.com/chat-widget.js"
-          strategy="afterInteractive"
-          data-client-id="acme"
-          data-widget-key="pub_acme_test_123"
-          data-api-url="https://api.crawbat.com/chat"
-          data-widget-config-url="https://api.crawbat.com/widget-config"
-
-          data-position="center" 
-          data-show-badge="true"
-          data-request-timeout="12000"
-        /> */}
-
       </body>
     </html>
   );
