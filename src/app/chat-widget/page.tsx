@@ -189,6 +189,15 @@ export default function ChatWidgetPage() {
 
     const timer = setTimeout(() => {
       injectWidget(activeClient.slug, activeClient.widgetKey, isDesktop, container);
+
+      // Auto-open widget on desktop after it loads
+      if (isDesktop) {
+        setTimeout(() => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const widget = (window as any).CrawbatWidget;
+          if (widget?.open) widget.open();
+        }, 500);
+      }
     }, 150);
 
     return () => {
@@ -202,7 +211,7 @@ export default function ChatWidgetPage() {
       {/* ── Header ── */}
       <header className="border-b border-zinc-800/60">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <span className="text-lg font-bold tracking-tight">crawbat</span>
+          <a href="https://crawbat.com" target="_blank" rel="noopener noreferrer" className="text-lg font-bold tracking-tight hover:text-zinc-300 transition-colors">crawbat</a>
           <span
             className="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
             style={{
