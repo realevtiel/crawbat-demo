@@ -12,6 +12,10 @@ const CLIENTS = [
     widgetKey: "pub_alpha_test_123",
     color: "#6d28d9",
     icon: "🛒",
+    suggestions: [
+      "Can I change my shipping address after I place an order?",
+      "Do you refund the original shipping cost when I return an item?",
+    ],
   },
   {
     slug: "beta",
@@ -22,6 +26,11 @@ const CLIENTS = [
     widgetKey: "pub_beta_test_456",
     color: "#dc2626",
     icon: "🏥",
+    suggestions: [
+      "Do I need an appointment or can I walk in?",
+      "What should I do if my symptoms get worse after I leave the clinic?",
+      "Do you provide emergency care for chest pain or stroke symptoms?",
+    ],
   },
   {
     slug: "gamma",
@@ -32,6 +41,12 @@ const CLIENTS = [
     widgetKey: "pub_gamma_test_789",
     color: "#0f766e",
     icon: "🛡️",
+    suggestions: [
+      "Do I need to leave the house during treatment?",
+      "If I still see roaches after treatment, does that mean the service failed?",
+      "Do you service my address if I am outside your main area?",
+      "Can I schedule a visit?",
+    ],
   },
 ] as const;
 
@@ -125,6 +140,32 @@ function injectWidget(
     startBodyTracking();
     document.body.appendChild(script);
   }
+}
+
+function sendToWidget(text: string) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const widget = (window as any).CrawbatWidget;
+  if (widget?.open) widget.open();
+
+  // Find input and insert text without submitting
+  setTimeout(() => {
+    const root = document.querySelector("[data-chat-widget-root]") || document.body;
+    const input = root.querySelector<HTMLInputElement | HTMLTextAreaElement>(
+      'textarea, input[type="text"]'
+    );
+    if (!input) return;
+
+    const setter = Object.getOwnPropertyDescriptor(
+      input.tagName === "TEXTAREA" ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype,
+      "value"
+    )?.set;
+
+    if (setter) setter.call(input, text);
+    else input.value = text;
+
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    input.focus();
+  }, 300);
 }
 
 export default function ChatWidgetPage() {
@@ -267,6 +308,36 @@ export default function ChatWidgetPage() {
               </button>
             );
           })}
+        </div>
+      </section>
+
+      {/* ── Suggestions ── */}
+      <section className="mx-auto w-full max-w-5xl px-6 pb-8 sm:pb-12">
+        <div className="mx-auto max-w-2xl">
+          <p className="mb-3 flex items-center justify-center gap-2 text-center text-xs font-medium text-zinc-500">
+            <span>You can start the chat with</span>
+            <span
+              className="transition-colors duration-300"
+              style={{ color: `${activeClient.color}88` }}
+            >
+              ↓
+            </span>
+          </p>
+          <div className="flex flex-wrap justify-center gap-2">
+            {activeClient.suggestions.map((text) => (
+              <button
+                key={text}
+                type="button"
+                onClick={() => sendToWidget(text)}
+                className="rounded-full border border-zinc-800 bg-zinc-900/60 px-4 py-2 text-left text-xs leading-relaxed text-zinc-300 transition-all hover:border-zinc-600 hover:bg-zinc-800 hover:text-white sm:text-sm"
+                style={{
+                  borderColor: `${activeClient.color}22`,
+                }}
+              >
+                {text}
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
