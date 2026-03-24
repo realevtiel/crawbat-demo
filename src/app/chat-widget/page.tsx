@@ -28,7 +28,7 @@ const CLIENTS = [
   },
   {
     slug: "beta",
-    label: "Clinic Front Desk Assistant",
+    label: "ClearPoint Urgent Care",
     industry: "Healthcare",
     description:
       "Helps patients with appointments, office hours, accepted insurance, and common questions.",
@@ -43,10 +43,11 @@ const CLIENTS = [
     ),
     suggestions: [
       "Do I need an appointment or can I walk in?",
-      "Do you accept my insurance?",
-      "Can I book a visit for tomorrow?",
-      "How do I schedule a visit?",
-      "What should I do if my symptoms get worse after I leave the clinic?",
+      "Do you take Blue Cross Blue Shield?",
+      "How much is a visit if I don’t have insurance?",
+      "What can you treat there?",
+      "How long is the wait right now?",
+      "Where are you located?",
     ],
   },
   {
