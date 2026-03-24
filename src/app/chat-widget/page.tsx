@@ -185,18 +185,30 @@ function injectWidget(
 function sendToWidget(text: string) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const widget = (window as any).CrawbatWidget;
-  if (widget?.open) widget.open();
+  if (!widget) return;
 
-  // Find input and insert text without submitting
+  // Use public API if available
+  if (widget.sendMessage) {
+    widget.sendMessage(text);
+    return;
+  }
+
+  if (widget.open) widget.open();
+
+  // Fallback: find the chat input (not form fields).
+  // The chat textarea has a placeholder like "Type a message..." / "Describe your issue..."
+  // Form inputs (Name, Email, Phone) are regular <input> elements inside the handoff form.
+  // Target only the main chat textarea at the bottom of the widget.
   setTimeout(() => {
     const root = document.querySelector("[data-chat-widget-root]") || document.body;
-    const input = root.querySelector<HTMLInputElement | HTMLTextAreaElement>(
-      'textarea, input[type="text"]'
-    );
+    const allTextareas = root.querySelectorAll<HTMLTextAreaElement>("textarea");
+    // Pick the last textarea — the chat input is always at the bottom,
+    // while form textareas (if any) appear higher up.
+    const input = allTextareas[allTextareas.length - 1];
     if (!input) return;
 
     const setter = Object.getOwnPropertyDescriptor(
-      input.tagName === "TEXTAREA" ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype,
+      HTMLTextAreaElement.prototype,
       "value"
     )?.set;
 
