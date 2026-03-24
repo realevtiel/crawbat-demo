@@ -224,8 +224,47 @@ function sendToWidget(text: string) {
 export default function ChatWidgetPage() {
   const [active, setActive] = useState<ClientSlug>("alpha");
   const [isDesktop, setIsDesktop] = useState(true);
+  const nudgeRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const activeClient = CLIENTS.find((c) => c.slug === active)!;
+
+  // Mobile nudge: show after 7s, hide forever (per session) once widget is opened
+  useEffect(() => {
+    if (isDesktop) return;
+    if (sessionStorage.getItem("crawbat_nudge_dismissed")) return;
+
+    const nudge = nudgeRef.current;
+    if (!nudge) return;
+
+    const show = () => nudge.removeAttribute("hidden");
+    const dismiss = () => {
+      nudge.setAttribute("hidden", "");
+      sessionStorage.setItem("crawbat_nudge_dismissed", "true");
+    };
+
+    nudge.setAttribute("hidden", "");
+    const timer = setTimeout(show, 7000);
+
+    window.addEventListener("crawbat:open", dismiss);
+
+    // Dismiss on click: the nudge itself, or anything crawbat-related
+    const onClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        nudge.contains(target) ||
+        target.closest("[class*='crawbat'], [id*='crawbat'], [data-chat-widget-root]")
+      ) {
+        dismiss();
+      }
+    };
+    document.addEventListener("click", onClick, true);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("crawbat:open", dismiss);
+      document.removeEventListener("click", onClick, true);
+    };
+  }, [isDesktop]);
 
   // Listen for consent acceptance and persist for the session
   useEffect(() => {
@@ -410,6 +449,18 @@ export default function ChatWidgetPage() {
         </div>
       </section>
 
+      {/* ── Nudge ── */}
+      <section className="mx-auto w-full max-w-5xl px-6 pb-8 sm:pb-12">
+        <div className="flex flex-col items-center gap-1 text-center">
+          <p className="text-sm font-medium text-zinc-300 sm:text-base">
+            Ask anything, not just preset questions.
+          </p>
+          <p className="text-xs text-zinc-500 sm:text-sm">
+            Handles real conversations from start to finish.
+          </p>
+        </div>
+      </section>
+
       {/* ── Widget Stage (desktop only) ── */}
       <section className="mx-auto hidden w-full max-w-5xl px-6 pb-16 sm:block">
         <div className="mb-6 flex flex-col items-center gap-2">
@@ -506,6 +557,30 @@ export default function ChatWidgetPage() {
           <span>&copy; {new Date().getFullYear()} Crawbat</span>
         </div>
       </footer>
+
+      {/* Mobile nudge pointing at widget button */}
+      <div
+        ref={nudgeRef}
+        hidden
+        className="fixed bottom-[88px] right-11 z-40 sm:hidden"
+      >
+        <p
+          className="crawbat-nudge text-xs font-medium text-zinc-400"
+          style={{ textShadow: `0 0 12px ${activeClient.color}55, 0 0 24px ${activeClient.color}33` }}
+        >
+          Try the chat <span style={{ color: activeClient.color }}>↓</span>
+        </p>
+      </div>
+
+      <style jsx>{`
+        .crawbat-nudge {
+          animation: nudge-float 2.5s ease-in-out infinite;
+        }
+        @keyframes nudge-float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(4px); }
+        }
+      `}</style>
 
       {/* Extra bottom space on mobile so fixed widget button doesn't cover footer */}
       <div className="h-24 sm:hidden" />
