@@ -187,9 +187,10 @@ function sendToWidget(text: string) {
   const widget = (window as any).CrawbatWidget;
   if (!widget) return;
 
-  // Use public API if available
-  if (widget.sendMessage) {
-    widget.sendMessage(text);
+  // Use public API to insert text without sending (prefer setInput over sendMessage)
+  if (widget.setInput) {
+    if (widget.open) widget.open();
+    widget.setInput(text);
     return;
   }
 
