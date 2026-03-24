@@ -4,29 +4,6 @@ import { useEffect, useRef, useState } from "react";
 
 const CLIENTS = [
   {
-    slug: "alpha",
-    label: "Online Store Support",
-    industry: "E-commerce",
-    description:
-      "Answers shipping, returns, order changes, and product questions instantly and much more!",
-    widgetKey: "pub_alpha_test_123",
-    color: "#6d28d9",
-    icon: (color: string) => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-        <path d="M3 6h18" />
-        <path d="M16 10a4 4 0 0 1-8 0" />
-      </svg>
-    ),
-    suggestions: [
-      "Can I change my shipping address after I place an order?",
-      "How long does shipping take?",
-      "What is your return policy?",
-      "Can I cancel my order after payment?",
-      "Do you refund the original shipping cost?",
-    ],
-  },
-  {
     slug: "beta",
     label: "ClearPoint Urgent Care",
     industry: "Healthcare",
@@ -51,9 +28,33 @@ const CLIENTS = [
     ],
   },
   {
+    slug: "alpha",
+    label: "Online Store Support",
+    industry: "E-commerce",
+    description:
+      "Answers shipping, returns, order changes, and product questions instantly and much more!",
+    widgetKey: "pub_alpha_test_123",
+    color: "#6d28d9",
+    icon: (color: string) => (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+        <path d="M3 6h18" />
+        <path d="M16 10a4 4 0 0 1-8 0" />
+      </svg>
+    ),
+    suggestions: [
+      "Where is my order?",
+      "Can I cancel or change my order?",
+      "How long does shipping take?",
+      "What is your return policy?",
+      "Why was my payment declined?",
+      "Do you ship internationally?",
+    ],
+  },
+  {
     slug: "gamma",
     label: "Service Booking Assistant",
-    industry: "Pest Control",
+    industry: "Maintenance Service",
     description:
       "Handles quotes, scheduling, service area questions, and common treatment concerns.",
     widgetKey: "pub_gamma_test_789",
@@ -70,11 +71,12 @@ const CLIENTS = [
       </svg>
     ),
     suggestions: [
+      "Can you come today?",
+      "How fast can someone get here?",
+      "Do you offer emergency services?",
       "Can I get a quote before booking?",
+      "What services do you provide?",
       "Do you service my area?",
-      "Do I need to leave the house during treatment?",
-      "How soon can you come out?",
-      "What if I still see pests after treatment?",
     ],
   },
 ] as const;
@@ -222,7 +224,7 @@ function sendToWidget(text: string) {
 }
 
 export default function ChatWidgetPage() {
-  const [active, setActive] = useState<ClientSlug>("alpha");
+  const [active, setActive] = useState<ClientSlug>("beta");
   const [isDesktop, setIsDesktop] = useState(true);
   const nudgeRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -542,11 +544,13 @@ export default function ChatWidgetPage() {
           >
             Book a call
           </a>
-          <p className="mt-5 text-xs tracking-wide text-zinc-600">
-            Flexible setup. Built around your business.
-          </p>
-          <p className="mt-1 text-xs tracking-wide text-zinc-600">
-            Quick 10–15 min call
+          <div className="mx-auto mt-8 max-w-md space-y-2 text-xs leading-relaxed text-zinc-500 sm:text-sm">
+            <p>Setup starts at <strong className="text-zinc-300">$3,000</strong> and scales based on your needs.</p>
+            <p>Ongoing support starts at <strong className="text-zinc-300">$1,399/month</strong>.</p>
+            <p>Includes a <strong className="text-zinc-300">30-day optimization period</strong> starting from project kickoff.</p>
+          </div>
+          <p className="mt-6 text-xs tracking-wide text-zinc-600">
+            Flexible setup. Tailored to your business.
           </p>
         </div>
       </section>
