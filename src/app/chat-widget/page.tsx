@@ -84,7 +84,7 @@ const CLIENTS = [
 type ClientSlug = (typeof CLIENTS)[number]["slug"];
 
 const CONSENT_KEY = "crawbat_demo_consent";
-const WIDGET_SRC = "https://widget.crawbat.com/chat-widget.js";
+const WIDGET_SRC = "https://widget.crawbat.com/chat-widget.js?v=1.0.1";
 const API_URL = "https://api.crawbat.com/chat";
 const CONFIG_URL = "https://api.crawbat.com/widget-config";
 
