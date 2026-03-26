@@ -253,14 +253,14 @@ export default function TestWidgetPage() {
           </div>
 
           {/* Widget area */}
-          <div className="flex-1 min-h-[600px]">
+          <div className="flex-1 min-h-0">
             {mode === "center" ? (
               <div
                 ref={containerRef}
-                className="w-full h-[600px] bg-zinc-900 rounded-lg border border-zinc-800 overflow-hidden"
+                className="w-full h-[calc(100vh-8rem)] bg-zinc-900 rounded-lg border border-zinc-800 overflow-hidden"
               />
             ) : (
-              <div className="flex items-center justify-center h-[600px] bg-zinc-900 rounded-lg border border-zinc-800">
+              <div className="flex items-center justify-center h-[calc(100vh-8rem)] bg-zinc-900 rounded-lg border border-zinc-800">
                 <p className="text-zinc-500 text-sm">
                   Widget appears in the bottom-{mode} corner of the page
                 </p>
