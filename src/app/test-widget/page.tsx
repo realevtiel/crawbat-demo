@@ -217,7 +217,7 @@ export default function TestWidgetPage() {
                         : "bg-zinc-800 hover:bg-zinc-700 text-zinc-300"
                     }`}
                   >
-                    {m === "center" ? "Inline" : m === "left" ? "Left" : "Right"}
+                    {m === "center" ? "center" : m === "left" ? "Left" : "Right"}
                   </button>
                 ))}
               </div>
