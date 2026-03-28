@@ -533,7 +533,7 @@ export default function ChatWidgetPage() {
             We&apos;ll review your current setup, show what to automate, and tailor everything to your business.
           </p>
           <a
-            href="https://calendly.com/alex-crawbat/30min"
+            href="https://calendly.com/alex-crawbat/ai-support-demo"
             target="_blank"
             rel="noopener noreferrer"
             className="mt-6 inline-block rounded-full px-7 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:brightness-110"
