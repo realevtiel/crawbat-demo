@@ -5,10 +5,10 @@ import { useEffect, useRef, useState } from "react";
 const CLIENTS = [
   {
     slug: "beta",
-    label: "ClearPoint Urgent Care",
+    label: "Fewer calls",
     industry: "Healthcare",
     description:
-      "Helps patients with appointments, office hours, accepted insurance, and common questions.",
+      "Handles appointments, insurance, and visit questions automatically, reducing routine phone calls and front desk load.",
     widgetKey: "pub_beta_test_456",
     color: "#dc2626",
     icon: (color: string) => (
@@ -29,10 +29,10 @@ const CLIENTS = [
   },
   {
     slug: "alpha",
-    label: "Online Store Support",
+    label: "More sales",
     industry: "E-commerce",
     description:
-      "Answers shipping, returns, order changes, and product questions instantly and much more!",
+      "Answers shipping, returns, and product questions instantly, reducing support tickets and improving conversions.",
     widgetKey: "pub_alpha_test_123",
     color: "#6d28d9",
     icon: (color: string) => (
@@ -53,10 +53,10 @@ const CLIENTS = [
   },
   {
     slug: "gamma",
-    label: "Service Booking Assistant",
-    industry: "Maintenance Service",
+    label: "More bookings",
+    industry: "Local Services",
     description:
-      "Handles quotes, scheduling, service area questions, and common treatment concerns.",
+      "Handles quotes, service questions, and booking intent, capturing more leads even after hours.",
     widgetKey: "pub_gamma_test_789",
     color: "#0f766e",
     icon: (color: string) => (
@@ -94,19 +94,19 @@ const FEATURES = [
   {
     title: "Reduce support load",
     text: (
-      <>Handle up to <strong className="text-zinc-300">50% of repetitive questions</strong> automatically and <strong className="text-zinc-300">free up your team</strong>.</>
+      <>Handle up to <strong className="text-zinc-300">50% of customer questions</strong> automatically and <strong className="text-zinc-300">free up your team</strong>.</>
     ),
   },
   {
-    title: "Done for you, fully managed",
+    title: "Fully Managed",
     text: (
-      <>We <strong className="text-zinc-300">set everything up</strong>, work with your team, and keep your support system <strong className="text-zinc-300">up to date</strong>.</>
+      <>We <strong className="text-zinc-300">set everything up</strong> and keep it aligned with <strong className="text-zinc-300">your business</strong>.</>
     ),
   },
   {
     title: "Support that gets smarter",
     text: (
-      <>We analyze conversations, find gaps, and <strong className="text-zinc-300">continuously improve</strong> your system.</>
+      <>See what customers actually ask, find gaps, and <strong className="text-zinc-300">continuously improve</strong> your support.</>
     ),
   },
 ];
@@ -312,7 +312,14 @@ export default function ChatWidgetPage() {
       {/* ── Header ── */}
       <header className="border-b border-zinc-800/60">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <a href="https://crawbat.com" target="_blank" rel="noopener noreferrer" className="text-lg font-bold tracking-tight hover:text-zinc-300 transition-colors">crawbat</a>
+          <a
+            href="https://crawbat.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-lg font-bold tracking-tight hover:text-zinc-300 transition-colors"
+          >
+            crawbat
+          </a>
           <span
             className="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
             style={{
@@ -334,21 +341,28 @@ export default function ChatWidgetPage() {
             color: activeClient.color,
           }}
         >
-          AI Support Chat
+          AI Support System
         </p>
         <h1 className="text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
-          Instant answers.{" "}
+          Turn support{" "}
           <span
             className="transition-colors duration-300"
             style={{ color: activeClient.color }}
           >
-             Better support.
+            into revenue.
           </span>
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-zinc-400 sm:text-lg">
-          Reduce <span className="transition-colors duration-300" style={{ color: activeClient.color }}>repetitive</span> support questions, reply faster, and <span className="transition-colors duration-300" style={{ color: activeClient.color }}>help more customers</span> with an AI chat trained on{" "}
-          <em>your</em> business. 
-          Explore the live demos below to see how it works across different industries.
+          Answer customers{" "}
+          <span style={{ color: activeClient.color }}>instantly</span> using
+          your business data, improve{" "}
+          <span style={{ color: activeClient.color }}>support quality</span>,
+          and capture{" "}
+          <span style={{ color: activeClient.color }}>more opportunities</span>{" "}
+          without hiring more agents.
+        </p>
+        <p className="mt-4 text-sm text-zinc-500">
+          See how <em>business</em> answers customer questions instantly
         </p>
       </section>
 
@@ -379,7 +393,9 @@ export default function ChatWidgetPage() {
                 }
               >
                 <div className="mb-2 flex items-center justify-between sm:mb-3">
-                  <span className="transition-colors duration-300">{client.icon(isActive ? client.color : "#71717a")}</span>
+                  <span className="transition-colors duration-300">
+                    {client.icon(isActive ? client.color : "#71717a")}
+                  </span>
                   <span
                     className="rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider sm:px-2.5 sm:text-[11px]"
                     style={
@@ -425,7 +441,7 @@ export default function ChatWidgetPage() {
       <section className="mx-auto w-full max-w-5xl px-6 pb-8 sm:pb-12">
         <div className="mx-auto max-w-2xl">
           <p className="mb-3 flex items-center justify-center gap-2 text-center text-xs font-medium text-zinc-500">
-            <span>Start with one of these questions</span>
+            <span>The same questions your team answers every day</span>
             <span
               className="transition-colors duration-300"
               style={{ color: `${activeClient.color}88` }}
@@ -493,19 +509,235 @@ export default function ChatWidgetPage() {
         </div>
       </section>
 
+      {/* ── Why Crawbat ── */}
+      <section className="border-t border-zinc-800/60">
+        <div className="mx-auto max-w-5xl px-6 pt-12 pb-14 sm:pt-16 sm:pb-20">
+          <h2 className="text-center text-xl font-semibold tracking-tight sm:text-2xl">
+            Why most AI support{" "}
+            <span
+              className="transition-colors duration-300"
+              style={{ color: activeClient.color }}
+            >
+              fails
+            </span>
+          </h2>
+          <p className="mx-auto mt-3 max-w-md text-center text-sm text-zinc-500">
+            Bad answers cost you customers.
+          </p>
+
+          <div className="mx-auto mt-8 grid max-w-3xl gap-4 sm:grid-cols-3">
+            {[
+              {
+                icon: (
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="m15 9-6 6" />
+                    <path d="m9 9 6 6" />
+                  </svg>
+                ),
+                title: "Gives wrong answers",
+                text: "Not your data → customers get incorrect information.",
+              },
+              {
+                icon: (
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M12 9v4" />
+                    <path d="M12 17h.01" />
+                    <path d="M3.586 16.726A2 2 0 0 0 5.035 20h13.93a2 2 0 0 0 1.449-3.274L13.449 4.446a2 2 0 0 0-2.898 0z" />
+                  </svg>
+                ),
+                title: "Makes things up",
+                text: "Fake promises, wrong policies, information that doesn’t exist.",
+              },
+              {
+                icon: (
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <line x1="17" y1="11" x2="22" y2="11" />
+                  </svg>
+                ),
+                title: "Breaks trust",
+                text: "One wrong answer can lose a customer instantly.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-5"
+              >
+                <div className="mb-3 text-zinc-500">{item.icon}</div>
+                <h3 className="text-sm font-semibold text-zinc-200">
+                  {item.title}
+                </h3>
+                <p className="mt-1.5 text-xs leading-relaxed text-zinc-500 sm:text-sm">
+                  {item.text}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Divider */}
+          <div className="mx-auto my-10 flex items-center gap-4 sm:my-14">
+            <div className="h-px flex-1 bg-zinc-800" />
+            <span className="text-xs font-semibold uppercase tracking-widest">
+              <span className="text-zinc-100">Crawbat</span>{" "}
+              <span
+                className="transition-colors duration-300"
+                style={{ color: activeClient.color }}
+              >
+                is different
+              </span>
+            </span>
+            <div className="h-px flex-1 bg-zinc-800" />
+          </div>
+
+          <div className="mx-auto grid max-w-3xl gap-4 sm:grid-cols-4">
+            {[
+              {
+                icon: (
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+                    <path d="m9 12 2 2 4-4" />
+                  </svg>
+                ),
+                title: "Your data only",
+                text: "Answers strictly from your business information.",
+              },
+              {
+                icon: (
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                ),
+                title: "No hallucinations",
+                text: "Never invents information or makes things up.",
+              },
+              {
+                icon: (
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                ),
+                title: "Smart escalation",
+                text: "Passes to your team when a human is needed.",
+              },
+              {
+                icon: (
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M2 20h.01" />
+                    <path d="M7 20v-4" />
+                    <path d="M12 20v-8" />
+                    <path d="M17 20V8" />
+                    <path d="M22 4v16" />
+                  </svg>
+                ),
+                title: "Smarter system",
+                text: "We improve your system based on real conversations.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="rounded-2xl border p-5 transition-colors duration-300"
+                style={{
+                  borderColor: `${activeClient.color}22`,
+                  background: `linear-gradient(135deg, ${activeClient.color}08, transparent)`,
+                }}
+              >
+                <div
+                  className="mb-3 transition-colors duration-300"
+                  style={{ color: activeClient.color }}
+                >
+                  {item.icon}
+                </div>
+                <h3 className="text-sm font-semibold text-zinc-200">
+                  {item.title}
+                </h3>
+                <p className="mt-1.5 text-xs leading-relaxed text-zinc-500 sm:text-sm">
+                  {item.text}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Features ── */}
       <section className="border-t border-zinc-800/60 bg-zinc-900/40">
         <div className="mx-auto max-w-5xl px-6 pt-10 pb-12 sm:pt-12 sm:pb-16">
-          <h2
-            className="text-center text-xl font-semibold tracking-tight transition-colors duration-300 sm:text-2xl"
-          >
+          <h2 className="text-center text-xl font-semibold tracking-tight transition-colors duration-300 sm:text-2xl">
             Automation is easy.{" "}
-          <span
-            className="transition-colors duration-300"
-            style={{ color: activeClient.color }}
-          >
-             Improving support is what matters.
-          </span>
+            <span
+              className="transition-colors duration-300"
+              style={{ color: activeClient.color }}
+            >
+              Improving support is what matters.
+            </span>
           </h2>
           <div className="mx-auto my-6 h-px w-24 bg-zinc-800 sm:my-8" />
           <div className="grid gap-6 sm:grid-cols-3 sm:gap-8">
@@ -527,10 +759,14 @@ export default function ChatWidgetPage() {
       <section className="border-t border-zinc-800/60">
         <div className="mx-auto max-w-5xl px-6 py-16 text-center sm:py-20">
           <h2 className="text-xl font-semibold tracking-tight text-zinc-100 sm:text-2xl">
-            Ready to improve your support?
+            See how this would work for you
           </h2>
           <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-zinc-500 sm:text-base">
-            We&apos;ll review your current setup, show what to automate, and tailor everything to your business.
+            We&apos;ll show exactly what your customers ask, what can be
+            automated, and what stays with your team.
+          </p>
+          <p className="mx-auto mt-3 max-w-md space-y-2 text-xs leading-relaxed text-zinc-300 sm:text-sm">
+            Most businesses automate 30–70% of support in the first month.
           </p>
           <a
             href="https://calendly.com/alex-crawbat/ai-support-demo"
@@ -545,12 +781,24 @@ export default function ChatWidgetPage() {
             Book a call
           </a>
           <div className="mx-auto mt-8 max-w-md space-y-2 text-xs leading-relaxed text-zinc-500 sm:text-sm">
-            <p>Setup starts at <strong className="text-zinc-300">$3,000</strong> and scales based on your needs.</p>
-            <p>Ongoing support starts at <strong className="text-zinc-300">$1,399/month</strong>.</p>
-            <p>Includes a <strong className="text-zinc-300">30-day optimization period</strong> starting from project kickoff.</p>
+            <p>
+              Setup starts at <strong className="text-zinc-300">$3,000</strong>{" "}
+              and scales based on your needs.
+            </p>
+            <p>
+              Ongoing support starts at{" "}
+              <strong className="text-zinc-300">$799/month</strong>.
+            </p>
+            <p>
+              Includes a{" "}
+              <strong className="text-zinc-300">
+                30-day optimization period
+              </strong>
+            </p>
           </div>
           <p className="mt-6 text-xs tracking-wide text-zinc-600">
-            Flexible setup. Tailored to your business.
+            Most clients use the demo call to understand fit, scope, and
+            expected ROI.
           </p>
         </div>
       </section>
@@ -570,7 +818,9 @@ export default function ChatWidgetPage() {
       >
         <p
           className="crawbat-nudge text-xs font-medium text-zinc-400"
-          style={{ textShadow: `0 0 12px ${activeClient.color}55, 0 0 24px ${activeClient.color}33` }}
+          style={{
+            textShadow: `0 0 12px ${activeClient.color}55, 0 0 24px ${activeClient.color}33`,
+          }}
         >
           Try the chat <span style={{ color: activeClient.color }}>↓</span>
         </p>
@@ -581,8 +831,13 @@ export default function ChatWidgetPage() {
           animation: nudge-float 2.5s ease-in-out infinite;
         }
         @keyframes nudge-float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(4px); }
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(4px);
+          }
         }
       `}</style>
 
