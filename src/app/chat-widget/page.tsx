@@ -5,10 +5,10 @@ import { useEffect, useRef, useState } from "react";
 const CLIENTS = [
   {
     slug: "beta",
-    label: "Fewer calls",
+    label: "Capture requests",
     industry: "Healthcare",
     description:
-      "Handles appointments, insurance, and visit questions automatically, reducing routine phone calls and front desk load.",
+      "Handles appointments, insurance, and patient requests automatically. Reduces front desk workload instantly.",
     widgetKey: "pub_beta_test_456",
     color: "#dc2626",
     icon: (color: string) => (
@@ -29,10 +29,10 @@ const CLIENTS = [
   },
   {
     slug: "alpha",
-    label: "More sales",
+    label: "Convert shoppers",
     industry: "E-commerce",
     description:
-      "Answers shipping, returns, and product questions instantly, reducing support tickets and improving conversions.",
+      "Answers questions and turns visitors into buyers. Captures more sales automatically.",
     widgetKey: "pub_alpha_test_123",
     color: "#6d28d9",
     icon: (color: string) => (
@@ -53,10 +53,12 @@ const CLIENTS = [
   },
   {
     slug: "gamma",
-    label: "More bookings",
+    label: "Book more jobs",
     industry: "Local Services",
+    badge: "leads captured",
+    highlightedSuggestion: "How do I schedule a visit?",
     description:
-      "Handles quotes, service questions, and booking intent, capturing more leads even after hours.",
+      "Handles quotes and converts chats into booked jobs. Captures leads without forms or calls.",
     widgetKey: "pub_gamma_test_789",
     color: "#0f766e",
     icon: (color: string) => (
@@ -71,12 +73,12 @@ const CLIENTS = [
       </svg>
     ),
     suggestions: [
+      "How do I schedule a visit?",
       "Can you come today?",
-      "How fast can someone get here?",
-      "Do you offer emergency services?",
-      "Can I get a quote before booking?",
-      "What services do you provide?",
+      "Can someone come out?",
       "Do you service my area?",
+      "How much would this cost?",
+      "I need help with my issue",
     ],
   },
 ] as const;
@@ -100,7 +102,7 @@ const FEATURES = [
   {
     title: "Fully Managed",
     text: (
-      <>We <strong className="text-zinc-300">set everything up</strong> and keep it aligned with <strong className="text-zinc-300">your business</strong>.</>
+      <>We don’t just set it up. We <strong className="text-zinc-300">improve your system</strong> from real conversations.</>
     ),
   },
   {
@@ -411,15 +413,25 @@ export default function ChatWidgetPage() {
                   </span>
                 </div>
 
-                <h3
-                  className={`text-sm font-semibold transition-colors sm:text-base ${
-                    isActive
-                      ? "text-white"
-                      : "text-zinc-300 group-hover:text-white"
-                  }`}
-                >
-                  {client.label}
-                </h3>
+                <div className="flex items-center justify-between gap-2">
+                  <h3
+                    className={`text-sm font-semibold transition-colors sm:text-base ${
+                      isActive
+                        ? "text-white"
+                        : "text-zinc-300 group-hover:text-white"
+                    }`}
+                  >
+                    {client.label}
+                  </h3>
+                  {"badge" in client && client.badge && (
+                    <span
+                      className="flex shrink-0 items-center gap-1 rounded-md border border-amber-500/10 bg-amber-950/20 px-1.5 py-px text-[10px] font-medium text-zinc-400 sm:text-[11px]"
+                    >
+                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400/60" style={{ boxShadow: "0 0 4px rgba(245,158,11,0.45)" }} />
+                      {client.badge}
+                    </span>
+                  )}
+                </div>
 
                 <p className="mt-1 text-xs leading-relaxed text-zinc-500 sm:mt-1.5 sm:text-sm">
                   {client.description}
@@ -449,19 +461,32 @@ export default function ChatWidgetPage() {
               ↓
             </span>
           </p>
-          <div className="flex flex-wrap justify-center gap-2">
-            {activeClient.suggestions.map((text, i) => (
-              <button
-                key={`${activeClient.slug}-${i}`}
-                type="button"
-                onClick={() => sendToWidget(text)}
-                className="rounded-full border border-zinc-800 bg-zinc-900/60 px-4 py-2 text-left text-xs leading-relaxed text-zinc-300 transition-all hover:border-zinc-600 hover:bg-zinc-800 hover:text-white sm:text-sm"
-                style={{
-                  borderColor: `${activeClient.color}22`,
-                }}
-              >
-                {text}
-              </button>
+          <div className="flex flex-col items-center gap-2">
+            {[0, 2, 4].map((offset) => (
+              <div key={offset} className="flex justify-center gap-2">
+                {activeClient.suggestions.slice(offset, offset + 2).map((text) => {
+                  const isHighlighted = "highlightedSuggestion" in activeClient && activeClient.highlightedSuggestion === text;
+                  return (
+                    <button
+                      key={`${activeClient.slug}-${text}`}
+                      type="button"
+                      onClick={() => sendToWidget(text)}
+                      className={`rounded-full border px-4 py-2 text-left text-xs leading-relaxed transition-all sm:text-sm ${
+                        isHighlighted
+                          ? "border-zinc-800 bg-amber-950/20 text-zinc-300 hover:border-amber-500/40 hover:bg-amber-900/30 hover:text-white"
+                          : "border-zinc-800 bg-zinc-900/60 text-zinc-300 hover:border-zinc-600 hover:bg-zinc-800 hover:text-white"
+                      }`}
+                      style={isHighlighted ? {
+                        borderColor: "rgba(245,158,11,0.18)",
+                      } : {
+                        borderColor: `${activeClient.color}22`,
+                      }}
+                    >
+                      {text}
+                    </button>
+                  );
+                })}
+              </div>
             ))}
           </div>
         </div>
@@ -506,6 +531,68 @@ export default function ChatWidgetPage() {
             ↑ click to chat with{" "}
             <span className="text-zinc-400">{activeClient.label}</span>
           </p>
+        </div>
+      </section>
+
+      {/* ── Leads Block ── */}
+      <section className="mx-auto w-full max-w-5xl px-6 pb-16 sm:pb-20">
+        <div
+          className="relative overflow-hidden rounded-3xl border p-8 sm:p-10"
+          style={{
+            borderColor: "rgba(245,158,11,0.28)",
+            background: "linear-gradient(135deg, rgba(120,53,15,0.18) 0%, rgba(24,24,27,0.75) 55%)",
+            boxShadow: "0 0 40px rgba(245,158,11,0.07), inset 0 1px 0 rgba(245,158,11,0.12)",
+          }}
+        >
+          {/* Glow top-left */}
+          <div
+            className="pointer-events-none absolute -left-10 -top-10 h-40 w-40 rounded-full opacity-30 blur-3xl"
+            style={{ backgroundColor: "rgba(245,158,11,0.25)" }}
+          />
+
+          <div className="relative grid gap-8 sm:grid-cols-[1.1fr_0.9fr] sm:gap-10">
+            {/* Left: text */}
+            <div className="flex flex-col justify-center">
+              <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-amber-500/70">
+                Lead capture
+              </p>
+              <h2 className="text-xl font-bold leading-snug tracking-tight text-zinc-100 sm:text-2xl">
+                Turn conversations{" "}
+                <span className="text-amber-400">into real customers</span>
+              </h2>
+              <p className="mt-4 text-sm leading-relaxed text-zinc-400 sm:text-base">
+                When customers ask about your services, Crawbat guides them, collects details, and turns them into ready-to-handle leads.
+              </p>
+            </div>
+
+            {/* Right: bullets */}
+            <div className="grid grid-cols-1 gap-3 sm:gap-4">
+              {[
+                "Captures what the customer needs",
+                "Collects name, phone, and urgency",
+                "Sends you a ready-to-handle lead instantly",
+                "No forms, no friction",
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3">
+                  <span
+                    className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border"
+                    style={{
+                      borderColor: "rgba(245,158,11,0.3)",
+                      backgroundColor: "rgba(120,53,15,0.2)",
+                      boxShadow: "0 0 6px rgba(245,158,11,0.1)",
+                    }}
+                  >
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="rgba(245,158,11,0.9)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20 6 9 17l-5-5" />
+                    </svg>
+                  </span>
+                  <span className="text-sm leading-relaxed text-zinc-300 sm:text-base">
+                    {item}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -736,7 +823,7 @@ export default function ChatWidgetPage() {
               className="transition-colors duration-300"
               style={{ color: activeClient.color }}
             >
-              Improving support is what matters.
+              Getting more customers is what matters.
             </span>
           </h2>
           <div className="mx-auto my-6 h-px w-24 bg-zinc-800 sm:my-8" />
