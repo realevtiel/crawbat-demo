@@ -19,12 +19,10 @@ const CLIENTS = [
       </svg>
     ),
     suggestions: [
-      "Do I need an appointment or can I walk in?",
       "Do you take Blue Cross Blue Shield?",
-      "How much is a visit if I don’t have insurance?",
       "What can you treat there?",
       "How long is the wait right now?",
-      "Where are you located?",
+      "How much is a visit if I don't have insurance?",
     ],
   },
   {
@@ -56,7 +54,7 @@ const CLIENTS = [
     label: "Book more jobs",
     industry: "Local Services",
     badge: "leads captured",
-    highlightedSuggestion: "How do I schedule a visit?",
+    highlightedSuggestion: "Can you come today?",
     description:
       "Handles quotes and converts chats into booked jobs. Captures leads without forms or calls.",
     widgetKey: "pub_gamma_test_789",
@@ -73,10 +71,8 @@ const CLIENTS = [
       </svg>
     ),
     suggestions: [
-      "How do I schedule a visit?",
       "Can you come today?",
       "Can someone come out?",
-      "Do you service my area?",
       "How much would this cost?",
       "I need help with my issue",
     ],
@@ -91,27 +87,6 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "https://api.crawbat.com/chat
 const CONFIG_URL = process.env.NEXT_PUBLIC_CONFIG_URL ?? "https://api.crawbat.com/widget-config";
 
 const SM_BREAKPOINT = 640;
-
-const FEATURES = [
-  {
-    title: "Reduce support load",
-    text: (
-      <>Handle up to <strong className="text-zinc-300">50% of customer questions</strong> automatically and <strong className="text-zinc-300">free up your team</strong>.</>
-    ),
-  },
-  {
-    title: "Fully Managed",
-    text: (
-      <>We don’t just set it up. We <strong className="text-zinc-300">improve your system</strong> from real conversations.</>
-    ),
-  },
-  {
-    title: "Support that gets smarter",
-    text: (
-      <>See what customers actually ask, find gaps, and <strong className="text-zinc-300">continuously improve</strong> your support.</>
-    ),
-  },
-];
 
 // Track nodes added to body (for mobile/right mode cleanup)
 let bodyNodes: Set<Node> = new Set();
@@ -311,6 +286,7 @@ export default function ChatWidgetPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-zinc-950 font-sans text-zinc-100">
+
       {/* ── Header ── */}
       <header className="border-b border-zinc-800/60">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
@@ -322,55 +298,49 @@ export default function ChatWidgetPage() {
           >
             crawbat
           </a>
-          <span
-            className="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-            style={{
-              backgroundColor: `${activeClient.color}22`,
-              color: activeClient.color,
-            }}
+          <a
+            href="https://calendly.com/alex-crawbat/ai-support-demo"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full px-4 py-1.5 text-xs font-semibold text-white transition-all hover:brightness-110"
+            style={{ backgroundColor: activeClient.color }}
           >
-            chat widget
-          </span>
+            Book a call
+          </a>
         </div>
       </header>
 
       {/* ── Hero ── */}
-      <section className="mx-auto w-full max-w-5xl px-6 pt-12 pb-8 text-center sm:pt-16 sm:pb-10">
-        <p
-          className="mb-3 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-widest"
-          style={{
-            backgroundColor: `${activeClient.color}22`,
-            color: activeClient.color,
-          }}
-        >
-          AI Support System
-        </p>
-        <h1 className="text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
-          Turn support{" "}
-          <span
-            className="transition-colors duration-300"
-            style={{ color: activeClient.color }}
-          >
-            into revenue.
+      <section className="mx-auto w-full max-w-5xl px-6 pt-16 pb-12 text-center sm:pt-24 sm:pb-16">
+        <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-6xl">
+          Get 2–3x more leads{" "}
+          <span className="transition-colors duration-300" style={{ color: activeClient.color }}>
+            from your existing traffic
           </span>
         </h1>
-        <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-zinc-400 sm:text-lg">
-          Answer customers{" "}
-          <span style={{ color: activeClient.color }}>instantly</span> using
-          your business data, improve{" "}
-          <span style={{ color: activeClient.color }}>support quality</span>,
-          and capture{" "}
-          <span style={{ color: activeClient.color }}>more opportunities</span>{" "}
-          without hiring more agents.
+        <p className="mx-auto mt-5 max-w-lg text-base text-zinc-400 sm:text-lg">
+          Answers instantly. Helps customers take action.
         </p>
-        <p className="mt-4 text-sm text-zinc-500">
-          See how <em>business</em> answers customer questions instantly
-        </p>
+
+        {/* Stats */}
+        <div className="mt-8 flex items-start justify-center gap-10 sm:gap-16">
+          {[
+            { value: "Up to 70%", label: "automated at start" },
+            { value: "2s", label: "response" },
+            { value: "24/7", label: "always on" },
+          ].map(({ value, label }) => (
+            <div key={label} className="flex flex-col items-center">
+              <span className="whitespace-nowrap text-2xl font-bold text-zinc-100 sm:text-3xl">{value}</span>
+              <span className="mt-1 whitespace-nowrap text-[11px] text-zinc-500 sm:text-xs">{label}</span>
+            </div>
+          ))}
+        </div>
       </section>
 
-      {/* ── Client Selector ── */}
-      <section className="mx-auto w-full max-w-5xl px-6 pb-8 sm:pb-12">
-        <div className="grid gap-3 sm:grid-cols-3 sm:gap-4" role="radiogroup">
+      {/* ── Demo ── */}
+      <section className="mx-auto w-full max-w-5xl px-6 pb-6">
+        {/* Compact tab selector */}
+        <div className="flex justify-center gap-3 sm:gap-5" role="radiogroup">
           {CLIENTS.map((client) => {
             const isActive = active === client.slug;
             return (
@@ -380,69 +350,24 @@ export default function ChatWidgetPage() {
                 role="radio"
                 aria-checked={isActive}
                 onClick={() => setActive(client.slug)}
-                className={`group relative cursor-pointer rounded-2xl border p-4 text-left transition-all duration-200 sm:p-5 ${
-                  isActive
-                    ? "border-transparent shadow-lg"
-                    : "border-zinc-800 bg-zinc-900/50 hover:border-zinc-700"
-                }`}
+                className="flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-medium transition-all duration-200 sm:text-sm"
                 style={
                   isActive
                     ? {
-                        background: `linear-gradient(135deg, ${client.color}18, ${client.color}08)`,
-                        boxShadow: `0 0 0 1px ${client.color}66, 0 4px 24px ${client.color}22`,
+                        borderColor: `${client.color}66`,
+                        backgroundColor: `${client.color}15`,
+                        color: client.color,
+                        boxShadow: `0 0 12px ${client.color}22`,
                       }
-                    : undefined
+                    : {
+                        borderColor: "#3f3f46",
+                        backgroundColor: "transparent",
+                        color: "#a1a1aa",
+                      }
                 }
               >
-                <div className="mb-2 flex items-center justify-between sm:mb-3">
-                  <span className="transition-colors duration-300">
-                    {client.icon(isActive ? client.color : "#71717a")}
-                  </span>
-                  <span
-                    className="rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider sm:px-2.5 sm:text-[11px]"
-                    style={
-                      isActive
-                        ? {
-                            backgroundColor: `${client.color}30`,
-                            color: client.color,
-                          }
-                        : { backgroundColor: "#27272a", color: "#a1a1aa" }
-                    }
-                  >
-                    {client.industry}
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between gap-2">
-                  <h3
-                    className={`text-sm font-semibold transition-colors sm:text-base ${
-                      isActive
-                        ? "text-white"
-                        : "text-zinc-300 group-hover:text-white"
-                    }`}
-                  >
-                    {client.label}
-                  </h3>
-                  {"badge" in client && client.badge && (
-                    <span
-                      className="flex shrink-0 items-center gap-1 rounded-md border border-amber-500/10 bg-amber-950/20 px-1.5 py-px text-[10px] font-medium text-zinc-400 sm:text-[11px]"
-                    >
-                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400/60" style={{ boxShadow: "0 0 4px rgba(245,158,11,0.45)" }} />
-                      {client.badge}
-                    </span>
-                  )}
-                </div>
-
-                <p className="mt-1 text-xs leading-relaxed text-zinc-500 sm:mt-1.5 sm:text-sm">
-                  {client.description}
-                </p>
-
-                {isActive && (
-                  <div
-                    className="absolute -bottom-px left-6 right-6 h-0.5 rounded-full"
-                    style={{ backgroundColor: client.color }}
-                  />
-                )}
+                <span>{client.icon(isActive ? client.color : "#71717a")}</span>
+                {client.industry}
               </button>
             );
           })}
@@ -450,22 +375,15 @@ export default function ChatWidgetPage() {
       </section>
 
       {/* ── Suggestions ── */}
-      <section className="mx-auto w-full max-w-5xl px-6 pb-8 sm:pb-12">
+      <section className="mx-auto w-full max-w-5xl px-6 pt-6 pb-8 sm:pb-10">
         <div className="mx-auto max-w-2xl">
-          <p className="mb-3 flex items-center justify-center gap-2 text-center text-xs font-medium text-zinc-500">
-            <span>The same questions your team answers every day</span>
-            <span
-              className="transition-colors duration-300"
-              style={{ color: `${activeClient.color}88` }}
-            >
-              ↓
-            </span>
-          </p>
           <div className="flex flex-col items-center gap-2">
-            {[0, 2, 4].map((offset) => (
+            {Array.from({ length: Math.ceil(activeClient.suggestions.length / 2) }, (_, i) => i * 2).map((offset) => (
               <div key={offset} className="flex justify-center gap-2">
                 {activeClient.suggestions.slice(offset, offset + 2).map((text) => {
-                  const isHighlighted = "highlightedSuggestion" in activeClient && activeClient.highlightedSuggestion === text;
+                  const isHighlighted =
+                    "highlightedSuggestion" in activeClient &&
+                    activeClient.highlightedSuggestion === text;
                   return (
                     <button
                       key={`${activeClient.slug}-${text}`}
@@ -476,11 +394,11 @@ export default function ChatWidgetPage() {
                           ? "border-zinc-800 bg-amber-950/20 text-zinc-300 hover:border-amber-500/40 hover:bg-amber-900/30 hover:text-white"
                           : "border-zinc-800 bg-zinc-900/60 text-zinc-300 hover:border-zinc-600 hover:bg-zinc-800 hover:text-white"
                       }`}
-                      style={isHighlighted ? {
-                        borderColor: "rgba(245,158,11,0.18)",
-                      } : {
-                        borderColor: `${activeClient.color}22`,
-                      }}
+                      style={
+                        isHighlighted
+                          ? { borderColor: "rgba(245,158,11,0.18)" }
+                          : { borderColor: `${activeClient.color}22` }
+                      }
                     >
                       {text}
                     </button>
@@ -492,32 +410,10 @@ export default function ChatWidgetPage() {
         </div>
       </section>
 
-      {/* ── Nudge ── */}
-      <section className="mx-auto w-full max-w-5xl px-6 pb-8 sm:pb-12">
-        <div className="flex flex-col items-center gap-1 text-center">
-          <p className="text-sm font-medium text-zinc-300 sm:text-base">
-            Ask anything, not just preset questions.
-          </p>
-          <p className="text-xs text-zinc-500 sm:text-sm">
-            Handles real conversations from start to finish.
-          </p>
-        </div>
-      </section>
-
       {/* ── Widget Stage (desktop only) ── */}
-      <section className="mx-auto hidden w-full max-w-5xl px-6 pb-16 sm:block">
-        <div className="mb-6 flex flex-col items-center gap-2">
-          <p className="text-xs font-medium uppercase tracking-[0.2em] text-zinc-600">
-            Live preview
-          </p>
-          <div
-            className="h-px w-10 transition-colors duration-300"
-            style={{ backgroundColor: `${activeClient.color}55` }}
-          />
-        </div>
-
+      <section className="mx-auto hidden w-full max-w-5xl px-6 pb-20 sm:block">
         <div
-          className="relative mx-auto rounded-3xl border border-dashed p-6 pt-10 transition-all duration-300"
+          className="relative mx-auto rounded-3xl border border-dashed p-6 transition-all duration-300"
           style={{
             borderColor: `${activeClient.color}33`,
             background: `radial-gradient(ellipse at center bottom, ${activeClient.color}0a 0%, transparent 60%)`,
@@ -526,367 +422,175 @@ export default function ChatWidgetPage() {
           }}
         >
           <div className="flex justify-center" ref={containerRef} />
-
-          <p className="pointer-events-none absolute bottom-5 left-0 right-0 -z-0 text-center text-[10px] font-medium uppercase tracking-widest text-zinc-600">
-            ↑ click to chat with{" "}
-            <span className="text-zinc-400">{activeClient.label}</span>
+          <p className="pointer-events-none absolute bottom-5 left-0 right-0 -z-0 text-center text-xs font-medium uppercase tracking-widest text-zinc-500">
+            ↑ Click to chat
           </p>
         </div>
       </section>
 
-      {/* ── Leads Block ── */}
+      {/* ── 3 Value Blocks ── */}
       <section className="mx-auto w-full max-w-5xl px-6 pb-16 sm:pb-20">
-        <div
-          className="relative overflow-hidden rounded-3xl border p-8 sm:p-10"
-          style={{
-            borderColor: "rgba(245,158,11,0.28)",
-            background: "linear-gradient(135deg, rgba(120,53,15,0.18) 0%, rgba(24,24,27,0.75) 55%)",
-            boxShadow: "0 0 40px rgba(245,158,11,0.07), inset 0 1px 0 rgba(245,158,11,0.12)",
-          }}
-        >
-          {/* Glow top-left */}
+        <div className="flex flex-col gap-4 sm:gap-5">
+
+          {/* Block 1: Leads — full width */}
           <div
-            className="pointer-events-none absolute -left-10 -top-10 h-40 w-40 rounded-full opacity-30 blur-3xl"
-            style={{ backgroundColor: "rgba(245,158,11,0.25)" }}
-          />
-
-          <div className="relative grid gap-8 sm:grid-cols-[1.1fr_0.9fr] sm:gap-10">
-            {/* Left: text */}
-            <div className="flex flex-col justify-center">
-              <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-amber-500/70">
-                Lead capture
-              </p>
-              <h2 className="text-xl font-bold leading-snug tracking-tight text-zinc-100 sm:text-2xl">
-                Turn conversations{" "}
-                <span className="text-amber-400">into real customers</span>
-              </h2>
-              <p className="mt-4 text-sm leading-relaxed text-zinc-400 sm:text-base">
-                When customers ask about your services, Crawbat guides them, collects details, and turns them into ready-to-handle leads.
-              </p>
-            </div>
-
-            {/* Right: bullets */}
-            <div className="grid grid-cols-1 gap-3 sm:gap-4">
-              {[
-                "Captures what the customer needs",
-                "Collects name, phone, and urgency",
-                "Sends you a ready-to-handle lead instantly",
-                "No forms, no friction",
-              ].map((item) => (
-                <div key={item} className="flex items-start gap-3">
-                  <span
-                    className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border"
-                    style={{
-                      borderColor: "rgba(245,158,11,0.3)",
-                      backgroundColor: "rgba(120,53,15,0.2)",
-                      boxShadow: "0 0 6px rgba(245,158,11,0.1)",
-                    }}
-                  >
-                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="rgba(245,158,11,0.9)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M20 6 9 17l-5-5" />
-                    </svg>
+            className="relative overflow-hidden rounded-3xl border p-10 transition-all duration-300 sm:p-12"
+            style={{
+              borderColor: `${activeClient.color}44`,
+              background: `linear-gradient(140deg, ${activeClient.color}32 0%, ${activeClient.color}0e 35%, rgb(9,9,11) 65%)`,
+              boxShadow: `0 0 80px ${activeClient.color}18, inset 0 1px 0 ${activeClient.color}30`,
+            }}
+          >
+            <div
+              className="pointer-events-none absolute -left-10 -top-10 h-56 w-56 rounded-full blur-3xl transition-colors duration-300"
+              style={{ backgroundColor: activeClient.color, opacity: 0.22 }}
+            />
+            <div className="relative flex flex-col gap-10 sm:flex-row sm:items-center sm:gap-24">
+              <div className="sm:flex-1">
+                <h2 className="text-3xl font-bold tracking-tight text-zinc-100 sm:text-4xl">
+                  Turns conversations into{" "}
+                  <span className="transition-colors duration-300" style={{ color: activeClient.color }}>
+                    leads
                   </span>
-                  <span className="text-sm leading-relaxed text-zinc-300 sm:text-base">
-                    {item}
-                  </span>
-                </div>
-              ))}
+                </h2>
+                <p className="mt-4 text-base text-zinc-300">No forms. No missed opportunities.</p>
+              </div>
+              <div className="flex flex-col gap-5 sm:flex-1">
+                {[
+                  { bold: "Understands", rest: " what they need" },
+                  { bold: "Collects", rest: " contact automatically" },
+                  { bold: "Sends", rest: " ready-to-close leads" },
+                ].map(({ bold, rest }) => (
+                  <div key={bold} className="flex items-center gap-3">
+                    <div
+                      className="h-1.5 w-1.5 shrink-0 rounded-full transition-colors duration-300"
+                      style={{ backgroundColor: activeClient.color, opacity: 0.7 }}
+                    />
+                    <p className="text-base sm:text-lg">
+                      <span className="font-bold text-zinc-100 transition-colors duration-300" style={{ color: activeClient.color }}>{bold}</span>
+                      <span className="text-zinc-300">{rest}</span>
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* ── Why Crawbat ── */}
-      <section className="border-t border-zinc-800/60">
-        <div className="mx-auto max-w-5xl px-6 pt-12 pb-14 sm:pt-16 sm:pb-20">
-          <h2 className="text-center text-xl font-semibold tracking-tight sm:text-2xl">
-            Why most AI support{" "}
-            <span
-              className="transition-colors duration-300"
-              style={{ color: activeClient.color }}
+          {/* Blocks 2+3 — side by side */}
+          <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
+
+            {/* Block 2: Accuracy — stronger */}
+            <div
+              className="relative overflow-hidden rounded-3xl border p-10 transition-all duration-300 sm:p-12"
+              style={{
+                borderColor: `${activeClient.color}55`,
+                background: `linear-gradient(220deg, ${activeClient.color}32 0%, ${activeClient.color}0e 35%, rgb(9,9,11) 65%)`,
+                boxShadow: `0 0 80px ${activeClient.color}20, inset 0 1px 0 ${activeClient.color}35`,
+              }}
             >
-              fails
-            </span>
-          </h2>
-          <p className="mx-auto mt-3 max-w-md text-center text-sm text-zinc-500">
-            Bad answers cost you customers.
-          </p>
-
-          <div className="mx-auto mt-8 grid max-w-3xl gap-4 sm:grid-cols-3">
-            {[
-              {
-                icon: (
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="m15 9-6 6" />
-                    <path d="m9 9 6 6" />
-                  </svg>
-                ),
-                title: "Gives wrong answers",
-                text: "Not your data → customers get incorrect information.",
-              },
-              {
-                icon: (
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M12 9v4" />
-                    <path d="M12 17h.01" />
-                    <path d="M3.586 16.726A2 2 0 0 0 5.035 20h13.93a2 2 0 0 0 1.449-3.274L13.449 4.446a2 2 0 0 0-2.898 0z" />
-                  </svg>
-                ),
-                title: "Makes things up",
-                text: "Fake promises, wrong policies, information that doesn’t exist.",
-              },
-              {
-                icon: (
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                    <circle cx="9" cy="7" r="4" />
-                    <line x1="17" y1="11" x2="22" y2="11" />
-                  </svg>
-                ),
-                title: "Breaks trust",
-                text: "One wrong answer can lose a customer instantly.",
-              },
-            ].map((item) => (
               <div
-                key={item.title}
-                className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-5"
-              >
-                <div className="mb-3 text-zinc-500">{item.icon}</div>
-                <h3 className="text-sm font-semibold text-zinc-200">
-                  {item.title}
-                </h3>
-                <p className="mt-1.5 text-xs leading-relaxed text-zinc-500 sm:text-sm">
-                  {item.text}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          {/* Divider */}
-          <div className="mx-auto my-10 flex items-center gap-4 sm:my-14">
-            <div className="h-px flex-1 bg-zinc-800" />
-            <span className="text-xs font-semibold uppercase tracking-widest">
-              <span className="text-zinc-100">Crawbat</span>{" "}
-              <span
-                className="transition-colors duration-300"
-                style={{ color: activeClient.color }}
-              >
-                is different
-              </span>
-            </span>
-            <div className="h-px flex-1 bg-zinc-800" />
-          </div>
-
-          <div className="mx-auto grid max-w-3xl gap-4 sm:grid-cols-4">
-            {[
-              {
-                icon: (
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
-                    <path d="m9 12 2 2 4-4" />
-                  </svg>
-                ),
-                title: "Your data only",
-                text: "Answers strictly from your business information.",
-              },
-              {
-                icon: (
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M20 6 9 17l-5-5" />
-                  </svg>
-                ),
-                title: "No hallucinations",
-                text: "Never invents information or makes things up.",
-              },
-              {
-                icon: (
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                    <circle cx="9" cy="7" r="4" />
-                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                  </svg>
-                ),
-                title: "Smart escalation",
-                text: "Passes to your team when a human is needed.",
-              },
-              {
-                icon: (
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M2 20h.01" />
-                    <path d="M7 20v-4" />
-                    <path d="M12 20v-8" />
-                    <path d="M17 20V8" />
-                    <path d="M22 4v16" />
-                  </svg>
-                ),
-                title: "Smarter system",
-                text: "We improve your system based on real conversations.",
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="rounded-2xl border p-5 transition-colors duration-300"
-                style={{
-                  borderColor: `${activeClient.color}22`,
-                  background: `linear-gradient(135deg, ${activeClient.color}08, transparent)`,
-                }}
-              >
-                <div
-                  className="mb-3 transition-colors duration-300"
-                  style={{ color: activeClient.color }}
-                >
-                  {item.icon}
+                className="pointer-events-none absolute -right-8 -top-8 h-48 w-48 rounded-full blur-3xl transition-colors duration-300"
+                style={{ backgroundColor: activeClient.color, opacity: 0.28 }}
+              />
+              <div className="relative">
+                <h2 className="text-xl font-bold tracking-tight text-zinc-100 sm:text-2xl">
+                  Answers only from{" "}
+                  <span className="transition-colors duration-300" style={{ color: activeClient.color }}>
+                    your data
+                  </span>
+                </h2>
+                <div className="mt-8 flex flex-col gap-6">
+                  {[
+                    { title: "No guessing", desc: "Never makes things up" },
+                    { title: "Always accurate", desc: "Strictly from your business data" },
+                    { title: "No hallucinations", desc: "Won't answer what it doesn't know" },
+                  ].map(({ title, desc }) => (
+                    <div key={title} className="flex items-start gap-3">
+                      <div
+                        className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
+                        style={{ backgroundColor: activeClient.color, opacity: 0.7 }}
+                      />
+                      <div>
+                        <p className="text-base font-bold text-zinc-100 sm:text-lg">{title}</p>
+                        <p className="mt-0.5 text-xs leading-relaxed text-zinc-600 sm:text-sm">{desc}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <h3 className="text-sm font-semibold text-zinc-200">
-                  {item.title}
-                </h3>
-                <p className="mt-1.5 text-xs leading-relaxed text-zinc-500 sm:text-sm">
-                  {item.text}
-                </p>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
 
-      {/* ── Features ── */}
-      <section className="border-t border-zinc-800/60 bg-zinc-900/40">
-        <div className="mx-auto max-w-5xl px-6 pt-10 pb-12 sm:pt-12 sm:pb-16">
-          <h2 className="text-center text-xl font-semibold tracking-tight transition-colors duration-300 sm:text-2xl">
-            Automation is easy.{" "}
-            <span
-              className="transition-colors duration-300"
-              style={{ color: activeClient.color }}
+            {/* Block 3: Smarter */}
+            <div
+              className="relative overflow-hidden rounded-3xl border p-8 transition-all duration-300 sm:p-10"
+              style={{
+                borderColor: `${activeClient.color}38`,
+                background: `linear-gradient(140deg, ${activeClient.color}22 0%, ${activeClient.color}08 35%, rgb(9,9,11) 65%)`,
+                boxShadow: `0 0 50px ${activeClient.color}0e, inset 0 1px 0 ${activeClient.color}22`,
+              }}
             >
-              Getting more customers is what matters.
-            </span>
-          </h2>
-          <div className="mx-auto my-6 h-px w-24 bg-zinc-800 sm:my-8" />
-          <div className="grid gap-6 sm:grid-cols-3 sm:gap-8">
-            {FEATURES.map((f) => (
-              <div key={f.title}>
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-300 sm:text-sm">
-                  {f.title}
-                </h3>
-                <p className="mt-1.5 text-xs leading-relaxed text-zinc-500 sm:mt-2 sm:text-sm">
-                  {f.text}
-                </p>
+              <div
+                className="pointer-events-none absolute -left-8 -bottom-8 h-40 w-40 rounded-full blur-3xl transition-colors duration-300"
+                style={{ backgroundColor: activeClient.color, opacity: 0.16 }}
+              />
+              <div className="relative">
+                <h2 className="text-xl font-bold tracking-tight text-zinc-100 sm:text-2xl">
+                  Gets smarter{" "}
+                  <span className="transition-colors duration-300" style={{ color: activeClient.color }}>
+                    every month
+                  </span>
+                </h2>
+                <div className="mt-8 flex flex-col gap-6">
+                  {[
+                    { title: "Finds missing answers", desc: "Spots gaps from real conversations" },
+                    { title: "Improves responses", desc: "Refined based on what actually works" },
+                    { title: "Learns from real questions", desc: "Gets better as customers use it" },
+                  ].map(({ title, desc }) => (
+                    <div key={title} className="flex items-start gap-3">
+                      <div
+                        className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
+                        style={{ backgroundColor: activeClient.color, opacity: 0.5 }}
+                      />
+                      <div>
+                        <p className="text-base font-bold text-zinc-100 sm:text-lg">{title}</p>
+                        <p className="mt-0.5 text-xs leading-relaxed text-zinc-600 sm:text-sm">{desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))}
+            </div>
+
           </div>
         </div>
       </section>
 
       {/* ── CTA ── */}
       <section className="border-t border-zinc-800/60">
-        <div className="mx-auto max-w-5xl px-6 py-16 text-center sm:py-20">
-          <h2 className="text-xl font-semibold tracking-tight text-zinc-100 sm:text-2xl">
+        <div className="mx-auto max-w-5xl px-6 py-16 text-center sm:py-24">
+          <h2 className="text-2xl font-bold tracking-tight text-zinc-100 sm:text-4xl">
             See how this would work for you
           </h2>
-          <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-zinc-500 sm:text-base">
-            We&apos;ll show exactly what your customers ask, what can be
-            automated, and what stays with your team.
-          </p>
-          <p className="mx-auto mt-3 max-w-md space-y-2 text-xs leading-relaxed text-zinc-300 sm:text-sm">
-            Most businesses automate 30–70% of support in the first month.
+          <p className="mx-auto mt-4 max-w-sm text-sm text-zinc-500">
+            Most businesses automate 30–70% in the first month.
           </p>
           <a
             href="https://calendly.com/alex-crawbat/ai-support-demo"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-6 inline-block rounded-full px-7 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:brightness-110"
+            className="mt-8 inline-block rounded-full px-8 py-3 text-sm font-semibold text-white transition-all duration-200 hover:brightness-110"
             style={{
               backgroundColor: activeClient.color,
-              boxShadow: `0 0 20px ${activeClient.color}33`,
+              boxShadow: `0 0 24px ${activeClient.color}44`,
             }}
           >
             Book a call
           </a>
-          <div className="mx-auto mt-8 max-w-md space-y-2 text-xs leading-relaxed text-zinc-500 sm:text-sm">
-            <p>
-              Setup starts at <strong className="text-zinc-300">$3,000</strong>{" "}
-              and scales based on your needs.
-            </p>
-            <p>
-              Ongoing support starts at{" "}
-              <strong className="text-zinc-300">$799/month</strong>.
-            </p>
-            <p>
-              Includes a{" "}
-              <strong className="text-zinc-300">
-                30-day optimization period
-              </strong>
-            </p>
+          <div className="mt-8 flex flex-col gap-1.5 text-sm text-zinc-500">
+            <p>Setup starts at <span className="font-semibold text-zinc-300">$3,000</span></p>
+            <p>From <span className="font-semibold text-zinc-300">$799/month</span></p>
+            <p>30-day optimization included</p>
           </div>
-          <p className="mt-6 text-xs tracking-wide text-zinc-600">
-            Most clients use the demo call to understand fit, scope, and
-            expected ROI.
-          </p>
         </div>
       </section>
 
