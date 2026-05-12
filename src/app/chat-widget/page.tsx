@@ -10,7 +10,7 @@ const CLIENTS = [
     description:
       "Answers treatment questions and books consultations. Converts curious visitors into booked clients automatically.",
     widgetKey: "pub_alpha_test_123",
-    color: "#be185d",
+    color: "#dc2626",
     icon: (color: string) => (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 2a5 5 0 1 0 5 5" />
@@ -34,7 +34,7 @@ const CLIENTS = [
     description:
       "Handles appointments, insurance, and patient requests automatically. Reduces front desk workload instantly.",
     widgetKey: "pub_beta_test_456",
-    color: "#dc2626",
+    color: "#6d28d9",
     icon: (color: string) => (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6 6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3" />
@@ -201,7 +201,7 @@ function sendToWidget(text: string) {
 }
 
 export default function ChatWidgetPage() {
-  const [active, setActive] = useState<ClientSlug>("beta");
+  const [active, setActive] = useState<ClientSlug>("medspa");
   const [isDesktop, setIsDesktop] = useState(true);
   const nudgeRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
