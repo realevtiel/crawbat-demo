@@ -22,9 +22,9 @@ const CLIENTS = [
     ),
     suggestions: [
       "What services do you offer?",
-      "Do you offer virtual consultations?",
-      "What treatment is best for acne scars?",
       "What helps with uneven skin tone and dark spots?",
+      "What treatment is best for acne scars?",
+      "Do you offer virtual consultations?",
     ],
   },
   {
