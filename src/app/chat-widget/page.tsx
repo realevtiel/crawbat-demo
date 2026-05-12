@@ -26,7 +26,7 @@ const CLIENTS = [
     ],
   },
   {
-    slug: "alpha",
+    slug: "medspa",
     label: "Convert shoppers",
     industry: "E-commerce",
     description:
