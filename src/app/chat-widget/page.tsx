@@ -4,6 +4,30 @@ import { useEffect, useRef, useState } from "react";
 
 const CLIENTS = [
   {
+    slug: "medspa",
+    label: "Book treatments",
+    industry: "Med Spa",
+    description:
+      "Answers treatment questions and books consultations. Converts curious visitors into booked clients automatically.",
+    widgetKey: "pub_alpha_test_123",
+    color: "#be185d",
+    icon: (color: string) => (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2a5 5 0 1 0 5 5" />
+        <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+        <path d="M9 9h.01" />
+        <path d="M15 9h.01" />
+        <path d="M17 7c1-1 3-1 3 1s-2 3-3 4" />
+      </svg>
+    ),
+    suggestions: [
+      "What services do you offer?",
+      "Do you offer virtual consultations?",
+      "What treatment is best for acne scars?",
+      "What helps with uneven skin tone and dark spots?",
+    ],
+  },
+  {
     slug: "beta",
     label: "Capture requests",
     industry: "Healthcare",
@@ -23,30 +47,6 @@ const CLIENTS = [
       "What can you treat there?",
       "How long is the wait right now?",
       "How much is a visit if I don't have insurance?",
-    ],
-  },
-  {
-    slug: "medspa",
-    label: "Convert shoppers",
-    industry: "E-commerce",
-    description:
-      "Answers questions and turns visitors into buyers. Captures more sales automatically.",
-    widgetKey: "pub_alpha_test_123",
-    color: "#6d28d9",
-    icon: (color: string) => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-        <path d="M3 6h18" />
-        <path d="M16 10a4 4 0 0 1-8 0" />
-      </svg>
-    ),
-    suggestions: [
-      "Where is my order?",
-      "Can I cancel or change my order?",
-      "How long does shipping take?",
-      "What is your return policy?",
-      "Why was my payment declined?",
-      "Do you ship internationally?",
     ],
   },
   {
